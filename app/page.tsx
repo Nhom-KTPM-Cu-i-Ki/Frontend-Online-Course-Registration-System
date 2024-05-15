@@ -1,8 +1,14 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { get } from "@/lib/http";
 export default function Home() {
+  // Test API HTTP
+  // const publicAPI = async () => {
+  //   const res = await get("/todos/1");
+  //   const data = res.data;
+  //   console.log(data);
+  // };
+  // publicAPI();
   return (
     <main className="flex flex-col items-center justify-between p-24 bg-slate-200 h-auto">
       <div className=" w-full">
@@ -48,7 +54,7 @@ export default function Home() {
           Dang ky hoc phan
         </Link>
         <Link
-          href={"/registration-courses"}
+          href={"/mark-student"}
           className="bg-slate-300 w-1/6 h-16 flex justify-center items-center ml-4"
           role="header"
         >
