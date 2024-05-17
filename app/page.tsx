@@ -3,12 +3,6 @@ import Link from "next/link";
 import { get } from "@/lib/http";
 export default function Home() {
   // Test API HTTP
-  const publicAPI = async () => {
-    const res = await get("/api/v1/students");
-    const data = res.data;
-    console.log(data);
-  };
-  publicAPI();
   return (
     <main className="flex flex-col items-center justify-between p-24 bg-slate-200 h-auto">
       <div className=" w-full">

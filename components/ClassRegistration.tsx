@@ -44,7 +44,20 @@ const invoices = [
   },
 ];
 
-export default function ClassRegistration() {
+interface Classs{
+  classId:number,
+  instructor:string,
+  roomId:number,
+  scheduleId:number,
+  semester:string,
+}
+
+
+interface ClassCreditProps {
+  classs?: Classs;
+}
+export default function ClassRegistration({ classs }: ClassCreditProps) {
+  
   return (
     <div className="pb-6">
       <div className="flex text-3xl justify-center pb-6">
