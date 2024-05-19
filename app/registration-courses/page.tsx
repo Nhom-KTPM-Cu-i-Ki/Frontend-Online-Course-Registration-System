@@ -1,5 +1,6 @@
+"use client"
 import { Checkbox } from "@/components/ui/checkbox";
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -14,6 +15,7 @@ import ClassCredit from "@/components/ClassCredit";
 import DetailClassCredit from "@/components/DetailClassCredit";
 import ClassRegistration from "@/components/ClassRegistration";
 import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
 
 const invoices = [
@@ -65,6 +67,13 @@ const invoices = [
 ];
 
 function RegistrationCourses() {
+  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
+
+  const handleUpdate = () => {
+    setShouldUpdate(prevState => !prevState);
+     // Kích hoạt việc render lại toàn bộ trang
+     console.log(shouldUpdate)
+  };
   return (
     <div className="w-full h-auto p-8 ">
       <Link
@@ -108,9 +117,8 @@ function RegistrationCourses() {
           <TableFooter></TableFooter>
         </Table>
       </div>
-      <ClassCredit />
-      <DetailClassCredit />
-      <ClassRegistration />
+      <ClassCredit  />
+      <ClassRegistration shouldUpdate={handleUpdate} />
     </div>
   );
 }

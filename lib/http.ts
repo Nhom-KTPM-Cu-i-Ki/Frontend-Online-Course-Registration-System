@@ -7,12 +7,15 @@ const axiosInstance = axios.create({
   },
 });
 
+
+
 export const get = <T>(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<AxiosResponse<T>> => {
   return axiosInstance.get<T>(url, config);
 };
+
 
 export const post = <T>(
   url: string,
