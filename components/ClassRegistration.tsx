@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
+import { get,} from "@/lib/http";
 
 const invoices = [
   {
@@ -44,7 +46,22 @@ const invoices = [
   },
 ];
 
+
 export default function ClassRegistration() {
+  const [classList, setClassList] = useState<any[]>([]);
+  const getAllClasses =async ()=>{
+    try {
+      const res = await get<any[]>("/class");
+      const data = res.data;
+      setClassList(data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getAllClasses();
+  }, []);
+  
   return (
     <div className="pb-6">
       <div className="flex text-3xl justify-center pb-6">

@@ -1,14 +1,33 @@
+"use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { get } from "@/lib/http";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 export default function Home() {
   // Test API HTTP
-  const publicAPI = async () => {
-    const res = await get("/api/v1/students");
-    const data = res.data;
-    console.log(data);
-  };
-  publicAPI();
+  // const publicAPI = async () => {
+  //   const res = await get("/api/v1/students");
+  //   const data = res.data;
+  //   console.log(data);
+  // };
+  // publicAPI();
+  // const [classList, setClassList] = useState<any[]>([]);
+  // // const dispatch = useDispatch();
+  // const getAllClasses =async ()=>{
+  //   try {
+  //     const res = await get<any[]>("/class");
+  //     const data = res.data;
+  //     // dispatch(setClasses(data));
+  //     setClassList(data);
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+  // useEffect(() => {
+  //   getAllClasses();
+  // }, []);
+  // console.log(classList)
   return (
     <main className="flex flex-col items-center justify-between p-24 bg-slate-200 h-auto">
       <div className=" w-full">

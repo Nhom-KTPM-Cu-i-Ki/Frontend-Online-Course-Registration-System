@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,38 +11,32 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Checkbox } from "./ui/checkbox";
+import { get } from "@/lib/http";
+import DetailClassCredit from "./DetailClassCredit";
 
-const invoices = [
-  {
-    icon: true,
-    stt: "1",
-    maLHP: "420300233002",
-    tenLHP: "Lập trình phân tích dữ liệu 2",
-    lopDukien: "DHKTPM16A",
-    siso: "80",
-    daDangKy: "0",
-  },
-  {
-    icon: true,
-    stt: "1",
-    maLHP: "420300233002",
-    tenLHP: "Lập trình phân tích dữ liệu 2",
-    lopDukien: "DHKTPM16A",
-    siso: "80",
-    daDangKy: "0",
-  },
-  {
-    icon: true,
-    stt: "1",
-    maLHP: "420300233002",
-    tenLHP: "Lập trình phân tích dữ liệu 2",
-    lopDukien: "DHKTPM16A",
-    siso: "80",
-    daDangKy: "0",
-  },
-];
+
+
 
 export default function ClassCredit() {
+  const [classList, setClassList] = useState<any[]>([]);
+  const [selectedClass, setSelectedClass] = useState<any>(null);
+  
+  const getAllClasses =async ()=>{
+    try {
+      const res = await get<any[]>("/class");
+      const data = res.data;
+      setClassList(data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getAllClasses();
+  }, []);
+  console.log(classList)
+  const handleRowClick = (classItem: any) => {
+    setSelectedClass(classItem);
+  };
   return (
     <div className="pb-6">
       <div className="flex text-3xl justify-center pb-4 border-b-2 pt-6">
@@ -61,23 +56,24 @@ export default function ClassCredit() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.maLHP}>
+            {classList.map((classItem, index) => (
+              <TableRow key={classItem.maLHP} onClick={() => handleRowClick(classItem)} className="cursor-pointer">
                 <TableCell className="font-medium">
-                  {invoice.icon ? <Checkbox /> : ""}
+                  {classItem.icon ? <Checkbox /> : ""}
                 </TableCell>
-                <TableCell>{invoice.stt}</TableCell>
-                <TableCell>{invoice.maLHP}</TableCell>
-                <TableCell>{invoice.tenLHP}</TableCell>
-                <TableCell>{invoice.lopDukien}</TableCell>
-                <TableCell>{invoice.siso}</TableCell>
-                <TableCell>{invoice.daDangKy}</TableCell>
+                <TableCell>{classItem.stt}</TableCell>
+                <TableCell>{classItem.classId}</TableCell>
+                <TableCell>{classItem.tenLHP}</TableCell>
+                <TableCell>{classItem.lopDukien}</TableCell>
+                <TableCell>{classItem.maxStudents}</TableCell>
+                <TableCell>{classItem.enrollmentCount}</TableCell>
               </TableRow>
             ))}
           </TableBody>
           <TableFooter></TableFooter>
         </Table>
       </div>
+      {selectedClass && <DetailClassCredit classItem={selectedClass} />}
     </div>
   );
 }

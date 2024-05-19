@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,35 +11,33 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
-
-const invoices = [
-  {
-    stt: "1",
-    lichhoc: "LT - Thứ 2 (T13 -> T15)",
-    nhomTH: "2",
-    phong: "A2.05",
-    giangvien: "Nguyễn Thị Đẹt",
-    tgian: "25/12/2023 - 22/04/2024",
-  },
-  {
-    stt: "1",
-    lichhoc: "LT - Thứ 2 (T13 -> T15)",
-    nhomTH: "2",
-    phong: "A2.05",
-    giangvien: "Nguyễn Thị Đẹt",
-    tgian: "25/12/2023 - 22/04/2024",
-  },
-  {
-    stt: "1",
-    lichhoc: "LT - Thứ 2 (T13 -> T15)",
-    nhomTH: "2",
-    phong: "A2.05",
-    giangvien: "Nguyễn Thị Đẹt",
-    tgian: "25/12/2023 - 22/04/2024",
-  },
-];
-
-export default function DetailClassCredit() {
+import { get, post, remove } from "@/lib/http";
+export interface ClassItems {
+  stt: string;
+  classId: string;
+  courseId: string;
+  maxStudents: string;
+  roomId: string;
+  instructor: string;
+  status: string;
+}
+export default function DetailClassCredit({ classItem }: { classItem: ClassItems }) {
+  // const [classList, setClassList] = useState<any[]>([]);
+  const classList = classItem;
+  console.log(classList)
+  const handleRegister = async () => {
+    const req = {
+      classId: classList.classId,
+      studentId:10
+    }
+    try {
+      const response =await post("/enrollments",req);
+      console.log("Đăng ký thành công:", response.data);
+      alert("Thêm thành công thành công")
+    } catch (error) {
+      alert("Thêm thất bại");
+    }
+  }
   return (
     <div className="pb-6">
       <div className="flex text-3xl justify-center pb-6">
@@ -56,22 +55,20 @@ export default function DetailClassCredit() {
               <TableHead>Thời gian</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.stt}>
-                <TableCell>{invoice.stt}</TableCell>
-                <TableCell>{invoice.lichhoc}</TableCell>
-                <TableCell>{invoice.nhomTH}</TableCell>
-                <TableCell>{invoice.phong}</TableCell>
-                <TableCell>{invoice.giangvien}</TableCell>
-                <TableCell>{invoice.tgian}</TableCell>
+          <TableBody>         
+              <TableRow >
+                <TableCell>{classList.stt}</TableCell>
+                <TableCell>{classList.courseId}</TableCell>
+                <TableCell>{classList.courseId}</TableCell>
+                <TableCell>{classList.roomId}</TableCell>
+                <TableCell>{classList.instructor}</TableCell>
+                <TableCell>{classList.courseId}</TableCell>
               </TableRow>
-            ))}
           </TableBody>
           <TableFooter></TableFooter>
         </Table>
         <div className="flex justify-center pt-6">
-          <Button>Đăng ký môn học</Button>
+          <Button onClick={handleRegister}>Đăng ký môn học</Button>
         </div>
       </div>
     </div>

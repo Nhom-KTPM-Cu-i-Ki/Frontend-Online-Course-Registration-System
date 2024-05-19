@@ -109,7 +109,6 @@ function RegistrationCourses() {
         </Table>
       </div>
       <ClassCredit />
-      <DetailClassCredit />
       <ClassRegistration />
     </div>
   );
