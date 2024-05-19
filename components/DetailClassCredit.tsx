@@ -21,18 +21,22 @@ export interface ClassItems {
   instructor: string;
   status: string;
 }
-export default function DetailClassCredit({ classItem }: { classItem: ClassItems }) {
+interface DetailClassCreditProps {
+  classItem: ClassItems;
+  updateClassList: () => void;  // Prop mới
+}
+export default function DetailClassCredit({ classItem, updateClassList }: DetailClassCreditProps) {
   // const [classList, setClassList] = useState<any[]>([]);
   const classList = classItem;
   console.log(classList)
   const handleRegister = async () => {
     const req = {
       classId: classList.classId,
-      studentId:10
+      studentId:1
     }
     try {
-      const response =await post("/enrollments",req);
-      console.log("Đăng ký thành công:", response.data);
+      const response =await post("/api/v1/enrollments",req);
+      updateClassList(); 
       alert("Thêm thành công thành công")
     } catch (error) {
       alert("Thêm thất bại");

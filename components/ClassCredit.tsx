@@ -23,17 +23,19 @@ export default function ClassCredit() {
   
   const getAllClasses =async ()=>{
     try {
-      const res = await get<any[]>("/class");
+      const res = await get<any[]>("/api/v1/class");
       const data = res.data;
       setClassList(data);
     } catch (error) {
       console.log(error)
     }
   }
+  const updateClassList = async () => {
+    getAllClasses(); // Gọi lại hàm lấy toàn bộ dữ liệu
+  };
   useEffect(() => {
     getAllClasses();
   }, []);
-  console.log(classList)
   const handleRowClick = (classItem: any) => {
     setSelectedClass(classItem);
   };
@@ -53,6 +55,7 @@ export default function ClassCredit() {
               <TableHead>Lớp dự kiến</TableHead>
               <TableHead>Sĩ số tối đa</TableHead>
               <TableHead>Đã đăng ký</TableHead>
+              <TableHead>Tình trạng</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -61,19 +64,20 @@ export default function ClassCredit() {
                 <TableCell className="font-medium">
                   {classItem.icon ? <Checkbox /> : ""}
                 </TableCell>
-                <TableCell>{classItem.stt}</TableCell>
+                <TableCell>{index+1}</TableCell>
                 <TableCell>{classItem.classId}</TableCell>
                 <TableCell>{classItem.tenLHP}</TableCell>
                 <TableCell>{classItem.lopDukien}</TableCell>
                 <TableCell>{classItem.maxStudents}</TableCell>
                 <TableCell>{classItem.enrollmentCount}</TableCell>
+                <TableCell>{classItem.status}</TableCell>
               </TableRow>
             ))}
           </TableBody>
           <TableFooter></TableFooter>
         </Table>
       </div>
-      {selectedClass && <DetailClassCredit classItem={selectedClass} />}
+      {selectedClass && <DetailClassCredit classItem={selectedClass} updateClassList={updateClassList} />}
     </div>
   );
 }

@@ -11,57 +11,39 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
-import { get,} from "@/lib/http";
+import { get, remove,} from "@/lib/http";
 
-const invoices = [
-  {
-    stt: "1",
-    maLHP: "420300154901",
-    tenMH: "Kiến trúc và Thiết kế phần mềm",
-    lopHocDuKien: "DHKTPM16A",
-    soTC: "4",
-    nhomTH: "3",
-    hocPhi: "3,010,000",
-    ngayDK: "25/12/2023",
-  },
-  {
-    stt: "1",
-    maLHP: "420300154901",
-    tenMH: "Kiến trúc và Thiết kế phần mềm",
-    lopHocDuKien: "DHKTPM16A",
-    soTC: "4",
-    nhomTH: "3",
-    hocPhi: "3,010,000",
-    ngayDK: "25/12/2023",
-  },
-  {
-    stt: "1",
-    maLHP: "420300154901",
-    tenMH: "Kiến trúc và Thiết kế phần mềm",
-    lopHocDuKien: "DHKTPM16A",
-    soTC: "4",
-    nhomTH: "3",
-    hocPhi: "3,010,000",
-    ngayDK: "25/12/2023",
-  },
-];
-
-
-export default function ClassRegistration() {
-  const [classList, setClassList] = useState<any[]>([]);
-  const getAllClasses =async ()=>{
+interface ClassRegistrationProps {
+  shouldUpdate: () => void;
+}
+export default function ClassRegistration({ shouldUpdate }: ClassRegistrationProps) {
+  const [enrollments, setEnrollments] = useState<any[]>([]);
+  const getAllEnrollments =async ()=>{
     try {
-      const res = await get<any[]>("/class");
+      const res = await get<any[]>("/api/v1/enrollments/studentId/1");
       const data = res.data;
-      setClassList(data);
+      setEnrollments(data);
     } catch (error) {
       console.log(error)
     }
   }
+  const handleDelte =async (invoice:any)=>{
+    try {
+      const studentId  =1
+      const classId = invoice.classId.classId
+      const res = await remove(`/api/v1/enrollments/studentId/${studentId}/classId/${classId}`);
+      setEnrollments(enrollments.filter(item => item.classId.classId !== classId));
+      shouldUpdate();
+      alert("Xóa thành công")
+    } catch (error) {
+      console.log(error)
+      alert("Xóa thất bại")
+    }
+  }
   useEffect(() => {
-    getAllClasses();
+    getAllEnrollments();
   }, []);
-  
+  console.log(enrollments)
   return (
     <div className="pb-6">
       <div className="flex text-3xl justify-center pb-6">
@@ -82,16 +64,18 @@ export default function ClassRegistration() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {invoices.map((invoice) => (
+            {enrollments.map((invoice,index) => (
               <TableRow key={invoice.stt}>
+                
                 <TableCell className="font-medium">{invoice.stt}</TableCell>
-                <TableCell>{invoice.maLHP}</TableCell>
+                <TableCell>{invoice.classId.classId}</TableCell>
                 <TableCell>{invoice.tenMH}</TableCell>
                 <TableCell>{invoice.lopHocDuKien}</TableCell>
-                <TableCell>{invoice.soTC}</TableCell>
+                <TableCell>{invoice.creditEarned}</TableCell>
                 <TableCell>{invoice.nhomTH}</TableCell>
-                <TableCell>{invoice.hocPhi}</TableCell>
-                <TableCell>{invoice.ngayDK}</TableCell>
+                <TableCell>{invoice.tuitionFee}</TableCell>
+                <TableCell>{invoice.registrationDate}</TableCell>
+                <Button onClick={()=>{handleDelte(invoice)}}>Hủy</Button>
               </TableRow>
             ))}
           </TableBody>
